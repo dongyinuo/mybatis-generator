@@ -33,6 +33,21 @@ public class DomainGenerator extends BaseGenerator {
     }
 
     /**
+     * 入口
+     * @param configInfo 文件配置
+     * @param tableInfo
+     */
+    public static List<String> generateExt(ConfigInfo configInfo, TableInfo tableInfo) {
+        List<String> content = new ArrayList<>();
+        addPackage(configInfo.getDomainPackagePath(), content);
+        addImportExt(tableInfo, content);
+        addClassComment(tableInfo, content);
+        addAnnotationExt(content);
+        addClassExt(configInfo.getDomainPostfix(), tableInfo, content);
+        return content;
+    }
+
+    /**
      * 添加类内容
      * @param tableInfo
      * @param content
@@ -50,10 +65,29 @@ public class DomainGenerator extends BaseGenerator {
     }
 
     /**
+     * 添加扩展类内容
+     * @param tableInfo
+     * @param content
+     */
+    private static void addClassExt(String postfix, TableInfo tableInfo, List<String> content) {
+        String className = tableInfo.getClassName();
+        content.add("public class " + className + "Ext" + postfix + " extends " + className + "{");
+        content.add("}");
+    }
+
+    /**
      * 添加类注解
      * @param content
      */
     private static void addAnnotation(List<String> content) {
+        content.add("@Data");
+    }
+
+    /**
+     * 添加类注解
+     * @param content
+     */
+    private static void addAnnotationExt(List<String> content) {
         content.add("@Data");
         content.add("@Builder");
         content.add("@NoArgsConstructor");
@@ -83,10 +117,7 @@ public class DomainGenerator extends BaseGenerator {
      */
     private static void addImport(TableInfo tableInfo, List<String> content) {
         content.add("");
-        content.add("import lombok.AllArgsConstructor;");
-        content.add("import lombok.Builder;");
         content.add("import lombok.Data;");
-        content.add("import lombok.NoArgsConstructor;");
 
         boolean importBlob = false;
         boolean importClob = false;
@@ -122,6 +153,20 @@ public class DomainGenerator extends BaseGenerator {
                 }
             }
         }
+    }
+
+    /**
+     * 添加import语句
+     *
+     * @param tableInfo raw materials
+     * @param content   output
+     */
+    private static void addImportExt(TableInfo tableInfo, List<String> content) {
+        content.add("");
+        content.add("import lombok.AllArgsConstructor;");
+        content.add("import lombok.Builder;");
+        content.add("import lombok.Data;");
+        content.add("import lombok.NoArgsConstructor;");
     }
 
     private static boolean importPackage(List<String> content, boolean imported, DataTypeTranslator.Java2Mysql typeEnum) {

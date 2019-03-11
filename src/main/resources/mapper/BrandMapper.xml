@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.output.ProdCategoryMapper">
-    <resultMap id="prodCategory" type="com.output.model.ProdCategory">
+<mapper namespace="com.output.BrandMapper">
+    <resultMap id="brand" type="com.output.model.Brand">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
+        <result column="brand_name" property="brandName" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -17,28 +18,31 @@
 
     <!-- Insert使用字段 -->
     <sql id="Columns_For_Insert">
-        `category_name`, `status`, `create_time`, `update_time`
+        `brand_name`, `sort`, `status`, `create_time`, `update_time`
     </sql>
 
     <!-- 插入数据 -->
-    <insert id="insert" parameterType="com.output.model.ProdCategoryExt" useGeneratedKeys="true" keyProperty="id">
-        insert into t_prod_category
+    <insert id="insert" parameterType="com.output.model.BrandExt" useGeneratedKeys="true" keyProperty="id">
+        insert into t_brand
         (    <include refid="Columns_For_Insert"/>    )
         values(
-            #{categoryName, jdbcType=VARCHAR}, #{status, jdbcType=TINYINT}, #{createTime, jdbcType=TIMESTAMP}, 
-            #{updateTime, jdbcType=TIMESTAMP}
+            #{brandName, jdbcType=VARCHAR}, #{sort, jdbcType=INTEGER}, #{status, jdbcType=TINYINT}, 
+            #{createTime, jdbcType=TIMESTAMP}, #{updateTime, jdbcType=TIMESTAMP}
         )
     </insert>
 
     <!-- 选择性插入插入数据 -->
-    <insert id="insertSelective" parameterType="com.output.model.ProdCategoryExt" useGeneratedKeys="true" keyProperty="id">
-        insert into t_prod_category
+    <insert id="insertSelective" parameterType="com.output.model.BrandExt" useGeneratedKeys="true" keyProperty="id">
+        insert into t_brand
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test=" id != null " >
                 `id,
             </if>
-            <if test=" categoryName != null and categoryName != '' " >
-                `category_name,
+            <if test=" brandName != null and brandName != '' " >
+                `brand_name,
+            </if>
+            <if test=" sort != null " >
+                `sort,
             </if>
             <if test=" status != null " >
                 `status,
@@ -54,8 +58,11 @@
             <if test=" id != null " >
                 `id` = #{id, jdbcType=BIGINT},
             </if>
-            <if test=" categoryName != null and categoryName != '' " >
-                `category_name` = #{categoryName, jdbcType=VARCHAR},
+            <if test=" brandName != null and brandName != '' " >
+                `brand_name` = #{brandName, jdbcType=VARCHAR},
+            </if>
+            <if test=" sort != null " >
+                `sort` = #{sort, jdbcType=INTEGER},
             </if>
             <if test=" status != null " >
                 `status` = #{status, jdbcType=TINYINT},
@@ -71,12 +78,12 @@
 
     <!-- 批量插入 -->
     <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        insert into t_prod_category
+        insert into t_brand
         (    <include refid="Columns_For_Insert"/>    )
         values
         <foreach collection="list" item="item" separator="," >
             (
-                #{item.categoryName, jdbcType=VARCHAR}, #{item.status, jdbcType=TINYINT}, 
+                #{item.brandName, jdbcType=VARCHAR}, #{item.sort, jdbcType=INTEGER}, #{item.status, jdbcType=TINYINT}, 
                 #{item.createTime, jdbcType=TIMESTAMP}, #{item.updateTime, jdbcType=TIMESTAMP}
             )
         </foreach>
@@ -84,16 +91,19 @@
 
     <!-- 根据主键删除 -->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from t_prod_category
+        delete from t_brand
         where `id` = #{id, jdbcType=BIGINT}
     </delete>
 
     <!-- 根据主键更新非空字段 -->
-    <update id="updateByPrimaryKey" parameterType="com.output.model.ProdCategoryExt">
-        update t_prod_category
+    <update id="updateByPrimaryKey" parameterType="com.output.model.BrandExt">
+        update t_brand
         <set>
-            <if test=" categoryName != null and categoryName != '' " >
-                `category_name` = #{categoryName, jdbcType=VARCHAR},
+            <if test=" brandName != null and brandName != '' " >
+                `brand_name` = #{brandName, jdbcType=VARCHAR},
+            </if>
+            <if test=" sort != null " >
+                `sort` = #{sort, jdbcType=INTEGER},
             </if>
             <if test=" status != null " >
                 `status` = #{status, jdbcType=TINYINT},
@@ -109,22 +119,25 @@
     </update>
 
     <!-- 根据主键查询 -->
-    <select id="queryByPrimaryKey" parameterType="java.lang.Long" resultMap="prodCategory">
+    <select id="queryByPrimaryKey" parameterType="java.lang.Long" resultMap="brand">
         select <include refid="Base_Columns"/>
-        from t_prod_category
+        from t_brand
         where `id` = #{id, jdbcType=BIGINT}
     </select>
 
     <!-- 根据条件查询一条记录 -->
-    <select id="queryOne" parameterType="com.output.model.ProdCategoryExt" resultMap="prodCategory">
+    <select id="queryOne" parameterType="com.output.model.BrandExt" resultMap="brand">
         select <include refid="Base_Columns"/>
-        from t_prod_category
+        from t_brand
         <where>
             <if test=" id != null " >
                 AND `id` = #{id, jdbcType=BIGINT}
             </if>
-            <if test=" categoryName != null and categoryName != '' " >
-                AND `category_name` = #{categoryName, jdbcType=VARCHAR}
+            <if test=" brandName != null and brandName != '' " >
+                AND `brand_name` = #{brandName, jdbcType=VARCHAR}
+            </if>
+            <if test=" sort != null " >
+                AND `sort` = #{sort, jdbcType=INTEGER}
             </if>
             <if test=" status != null " >
                 AND `status` = #{status, jdbcType=TINYINT}
@@ -140,15 +153,18 @@
     </select>
 
     <!-- 根据条件查询列表 -->
-    <select id="queryList" parameterType="com.output.model.ProdCategoryExt" resultMap="prodCategory">
+    <select id="queryList" parameterType="com.output.model.BrandExt" resultMap="brand">
         select <include refid="Base_Columns"/>
-        from t_prod_category
+        from t_brand
         <where>
             <if test=" id != null " >
                 AND `id` = #{id, jdbcType=BIGINT}
             </if>
-            <if test=" categoryName != null and categoryName != '' " >
-                AND `category_name` = #{categoryName, jdbcType=VARCHAR}
+            <if test=" brandName != null and brandName != '' " >
+                AND `brand_name` = #{brandName, jdbcType=VARCHAR}
+            </if>
+            <if test=" sort != null " >
+                AND `sort` = #{sort, jdbcType=INTEGER}
             </if>
             <if test=" status != null " >
                 AND `status` = #{status, jdbcType=TINYINT}
@@ -163,15 +179,18 @@
     </select>
 
     <!-- 统计数量 -->
-    <select id="count" parameterType="com.output.model.ProdCategoryExt" resultType="java.lang.Integer">
+    <select id="count" parameterType="com.output.model.BrandExt" resultType="java.lang.Integer">
         select count(*)
-        from t_prod_category
+        from t_brand
         <where>
             <if test=" id != null " >
                 AND `id` = #{id, jdbcType=BIGINT}
             </if>
-            <if test=" categoryName != null and categoryName != '' " >
-                AND `category_name` = #{categoryName, jdbcType=VARCHAR}
+            <if test=" brandName != null and brandName != '' " >
+                AND `brand_name` = #{brandName, jdbcType=VARCHAR}
+            </if>
+            <if test=" sort != null " >
+                AND `sort` = #{sort, jdbcType=INTEGER}
             </if>
             <if test=" status != null " >
                 AND `status` = #{status, jdbcType=TINYINT}

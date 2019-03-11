@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class TableInfo {
 
-    private final static String table_prefix = "T_";
+    private final static String table_prefix = "t_";
 
     /**
      * 表名
@@ -41,6 +41,7 @@ public class TableInfo {
     private List<ColumnInfo> columnInfos;
 
     public void setClassName() {
+        this.tableName = this.tableName.toLowerCase();
         if (this.tableName.startsWith(table_prefix)){
             this.className = CommonUtil.toHump(this.tableName.substring(2));
         }else {

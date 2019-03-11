@@ -25,6 +25,11 @@ public class FileGenerator {
             writeToFile(baseDirectory + "java/" + configInfo.getDomainPackagePath().replace(".", "/")
                     + "/" + tableInfo.getClassName() + configInfo.getDomainFilePostfix(), content);
 
+            content = DomainGenerator.generateExt(configInfo, tableInfo);
+            writeToFile(baseDirectory + "java/" + configInfo.getDomainPackagePath().replace(".", "/")
+                    + "/" + tableInfo.getClassName() + "Ext" + configInfo.getDomainFilePostfix(), content);
+
+
             content = DaoGenerator.generate(configInfo, tableInfo);
             writeToFile(baseDirectory + "java/" + configInfo.getModulePackagePath().replace(".", "/")
                     + "/" + tableInfo.getClassName() + configInfo.getDaoFilePostfix(), content);

@@ -23,7 +23,7 @@ public class DaoGenerator extends BaseGenerator {
     public static List<String> generate(ConfigInfo configInfo, TableInfo tableInfo) {
         List<String> content = new ArrayList<>();
         addPackage(configInfo.getModulePackagePath(), content);
-        addImport(configInfo.getDomainPackagePath(), tableInfo.getClassName() + configInfo.getDomainPostfix(), content);
+        addImport(configInfo.getDomainPackagePath(), tableInfo.getClassName() + "Ext" + configInfo.getDomainPostfix(), content);
         addClassComment(tableInfo.getComment(), content);
         addClass(configInfo, tableInfo, content);
         return content;
@@ -42,9 +42,11 @@ public class DaoGenerator extends BaseGenerator {
                 break;
             }
         }
-        String className = tableInfo.getClassName() + configInfo.getDomainPostfix();
+        String className = tableInfo.getClassName() + configInfo.getDomainPostfix() + "Ext";
+        content.add("@Repository(\"" + tableInfo.getClassName() +  configInfo.getDaoPostfix() + "Mapper\")");
         content.add("public interface " + tableInfo.getClassName() +  configInfo.getDaoPostfix() + " {");
         addInsert(className, content);
+        addInsertSelective(className, content);
         addBatchInsert(className, content);
         if (priColumn != null) {
             addDeleteByPrimaryKey(priColumn, content);
@@ -116,6 +118,7 @@ public class DaoGenerator extends BaseGenerator {
      */
     private static void addImport(String domainPackagePath, String domainName, List<String> content) {
         content.add("");
+        content.add("import org.springframework.stereotype.Repository;");
         content.add(CommonUtil.IMPORT.replace("$modulePackagePath", domainPackagePath + "." + domainName));
         content.add(CommonUtil.IMPORT.replace("$modulePackagePath", "java.util.List"));
     }
@@ -204,6 +207,22 @@ public class DaoGenerator extends BaseGenerator {
         content.add(CommonUtil.SPACE4 + " * @param " + CommonUtil.firstCharToLower(domainClassName) + " 待插入对象");
         content.add(CommonUtil.SPACE4 + " */");
         content.add(CommonUtil.SPACE4 + "void insert(" + domainClassName + " " + CommonUtil.firstCharToLower(domainClassName) + ");");
+    }
+
+    /**
+     * 增加insertSelective方法
+     *
+     * @param domainClassName domain类名
+     * @param content         输出文件内容
+     */
+    private static void addInsertSelective(final String domainClassName, final List<String> content) {
+        content.add("");
+        content.add(CommonUtil.SPACE4 + "/**");
+        content.add(CommonUtil.SPACE4 + " * 插入一条数据");
+        content.add(CommonUtil.SPACE4 + " * ");
+        content.add(CommonUtil.SPACE4 + " * @param " + CommonUtil.firstCharToLower(domainClassName) + " 待插入对象");
+        content.add(CommonUtil.SPACE4 + " */");
+        content.add(CommonUtil.SPACE4 + "void insertSelective(" + domainClassName + " " + CommonUtil.firstCharToLower(domainClassName) + ");");
     }
 
     /**

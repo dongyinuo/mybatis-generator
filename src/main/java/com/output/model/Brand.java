@@ -4,26 +4,31 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 
+ * 品牌信息
  * 
  * @author dongyinuo
  * @date 2019-03-11
  */
 @Data
-public class ProdCategory {
+public class Brand {
 
     /**
-     * 分类id
+     * 主键id
      */
     private Long id;
 
     /**
-     * 商品分类
+     * 品牌名称
      */
-    private String categoryName;
+    private String brandName;
 
     /**
-     * 状态
+     * 排序
+     */
+    private Integer sort;
+
+    /**
+     * 状态:0禁用，1启用
      */
     private Byte status;
 

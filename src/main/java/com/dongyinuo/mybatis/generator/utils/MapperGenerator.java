@@ -58,11 +58,12 @@ public class MapperGenerator {
      * @param content
      */
     private static void addMapper(ConfigInfo configInfo, TableInfo tableInfo, List<String> content) {
-        String parameterType = configInfo.getDomainPackagePath() + "." + tableInfo.getClassName() + configInfo.getDomainPostfix();
+        String parameterType = configInfo.getDomainPackagePath() + "." + tableInfo.getClassName() + "Ext" +configInfo.getDomainPostfix();
         addNamespace(configInfo, tableInfo.getClassName(), content);
         addResultMap(configInfo, tableInfo, content);
         addColumn(content);
         addInsert(parameterType, tableInfo.getTableName(), content);
+        addInsertSelective(parameterType, tableInfo, content);
         addBatchInsert(tableInfo.getTableName(), content);
         if (priColumn != null) {
             addDeleteByPrimaryKey(tableInfo.getTableName(), content);
@@ -106,7 +107,12 @@ public class MapperGenerator {
                         .replace("$parameterType", parameterType)
                         .replace("$resultMap", tableInfo.getObjectName()));
         content.add(CommonUtil.getNTab(2) + "select <include refid=\"" + BASE_COLUMNS + "\"/>");
-        selectFromWhere(tableInfo, content);
+        content.add(CommonUtil.getNTab(2) + "from " + tableInfo.getTableName());
+        content.add(CommonUtil.getNTab(2) + "<where>");
+        if4SelectOrUpdate(tableInfo.getColumnInfos(), content, 0);
+        content.add(CommonUtil.getNTab(2) + "</where>");
+        content.add(CommonUtil.SPACE4 + CommonUtil.SPACE4 + "limit 1");
+        content.add(CommonUtil.SPACE4 + "</select>");
     }
 
     /**
@@ -169,6 +175,28 @@ public class MapperGenerator {
             } else {
                 throw new RuntimeException("传值错误: flag = " + flag);
             }
+            content.add(sb0.toString());
+            content.add(CommonUtil.getNTab(3) + "</if>");
+        }
+    }
+
+    /**
+     *
+     * 列出可选择的 property
+     * @param columnInfos
+     * @param content
+     */
+    private static void listSelectiveProperty(List<ColumnInfo> columnInfos, List<String> content) {
+        for (ColumnInfo columnInfo : columnInfos) {
+            String property = columnInfo.getProperty();
+            if ("String".equals(columnInfo.getType().java)) {
+                content.add(CommonUtil.getNTab(3) + "<if test=\" " + property + " != null and " + property + " != '' \" >");
+            } else {
+                content.add(CommonUtil.getNTab(3) + "<if test=\" " + property + " != null \" >");
+            }
+            StringBuilder sb0 = new StringBuilder(CommonUtil.getNTab(4));
+            StringBuilder columnEqualsProperty = new StringBuilder().append("`").append(columnInfo.getColumnName());
+            sb0.append(columnEqualsProperty).append(",");
             content.add(sb0.toString());
             content.add(CommonUtil.getNTab(3) + "</if>");
         }
@@ -318,6 +346,29 @@ public class MapperGenerator {
         content.add(CommonUtil.getNTab(2) + "values(");
         listProperty(content, 3);
         content.add(CommonUtil.getNTab(2) + ")");
+        content.add(CommonUtil.SPACE4 + "</insert>");
+    }
+
+   /**
+     * 选择性添加插入方法
+     *
+     * @param parameterType
+     * @param tableInfo
+     * @param content
+     */
+    private static void addInsertSelective(String parameterType, TableInfo tableInfo, List<String> content) {
+        content.add("");
+        content.add(CommonUtil.SPACE4 + "<!-- 选择性插入插入数据 -->");
+        content.add(CommonUtil.SPACE4 + INSERT.replace("$id", "insertSelective")
+                .replace("$parameterType", parameterType)
+                .replace("$key", priColumn.getProperty()));
+        content.add(CommonUtil.getNTab(2) + "insert into " + tableInfo.getTableName());
+        content.add(CommonUtil.getNTab(2) + "<trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\">");
+        listSelectiveProperty(tableInfo.getColumnInfos(), content);
+        content.add(CommonUtil.getNTab(2) + "</trim>");
+        content.add(CommonUtil.getNTab(2) + "<trim prefix=\"values (\" suffix=\")\" suffixOverrides=\",\">");
+        if4SelectOrUpdate(tableInfo.getColumnInfos(), content, 1);
+        content.add(CommonUtil.getNTab(2) + "</trim>");
         content.add(CommonUtil.SPACE4 + "</insert>");
     }
 
