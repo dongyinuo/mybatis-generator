@@ -4,6 +4,7 @@ import com.dongyinuo.mybatis.generator.data.ColumnInfo;
 import com.dongyinuo.mybatis.generator.data.ConfigInfo;
 import com.dongyinuo.mybatis.generator.data.DataTypeTranslator;
 import com.dongyinuo.mybatis.generator.data.TableInfo;
+import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class DomainGenerator extends BaseGenerator {
         List<String> content = new ArrayList<>();
         addPackage(configInfo.getDomainPackagePath(), content);
         addImport(tableInfo, content);
-        addClassComment(tableInfo, content);
+        addClassComment(tableInfo, content, 0);
         addAnnotation(content);
         addClass(configInfo.getDomainPostfix(), tableInfo, content);
         return content;
@@ -41,7 +42,7 @@ public class DomainGenerator extends BaseGenerator {
         List<String> content = new ArrayList<>();
         addPackage(configInfo.getDomainPackagePath(), content);
         addImportExt(tableInfo, content);
-        addClassComment(tableInfo, content);
+        addClassComment(tableInfo, content, 1);
         addAnnotationExt(content);
         addClassExt(configInfo.getDomainPostfix(), tableInfo, content);
         return content;
@@ -71,7 +72,29 @@ public class DomainGenerator extends BaseGenerator {
      */
     private static void addClassExt(String postfix, TableInfo tableInfo, List<String> content) {
         String className = tableInfo.getClassName();
-        content.add("public class " + className + "Ext" + postfix + " extends " + className + "{");
+        String extClassName = className + "Ext";
+        content.add("public class " + extClassName + postfix + " extends " + className + "{");
+
+        // 拼装构造函数
+        StringBuilder superProperty = new StringBuilder();
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
+            superProperty.append(columnInfo.getType().java + " " + columnInfo.getProperty() + ", ");
+        }
+
+        if (superProperty.length() > 0){
+            content.add("");
+            content.add(CommonUtil.SPACE4 + "@Builder");
+            content.add(CommonUtil.SPACE4 + "public " + extClassName + "(" + superProperty.substring(0, superProperty.length() - 2) + ") {");
+
+            superProperty = new StringBuilder();
+            for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
+                superProperty.append(columnInfo.getProperty() + ", ");
+            }
+
+            content.add(CommonUtil.SPACE4 + CommonUtil.SPACE4 + "super(" + superProperty.substring(0, superProperty.length() - 2) + ");");
+            content.add(CommonUtil.SPACE4 + "}");
+        }
+
         content.add("}");
     }
 
@@ -81,6 +104,8 @@ public class DomainGenerator extends BaseGenerator {
      */
     private static void addAnnotation(List<String> content) {
         content.add("@Data");
+        content.add("@NoArgsConstructor");
+        content.add("@AllArgsConstructor");
     }
 
     /**
@@ -89,7 +114,6 @@ public class DomainGenerator extends BaseGenerator {
      */
     private static void addAnnotationExt(List<String> content) {
         content.add("@Data");
-        content.add("@Builder");
         content.add("@NoArgsConstructor");
         content.add("@AllArgsConstructor");
     }
@@ -99,10 +123,13 @@ public class DomainGenerator extends BaseGenerator {
      * @param tableInfo raw materials
      * @param content   output
      */
-    private static void addClassComment(TableInfo tableInfo, List<String> content) {
+    private static void addClassComment(TableInfo tableInfo, List<String> content, int flag) {
         content.add("");
         content.add("/**");
-        content.add(" * " + tableInfo.getComment());
+        String tableComment = tableInfo.getComment();
+        if (!StringUtils.isEmpty(tableComment)){
+            content.add(" * " + tableComment + (flag == 1 ? "扩展" : ""));
+        }
         content.add(" * ");
         content.add(" * @author " + AUTHOR);
         content.add(" * @date " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
@@ -118,7 +145,34 @@ public class DomainGenerator extends BaseGenerator {
     private static void addImport(TableInfo tableInfo, List<String> content) {
         content.add("");
         content.add("import lombok.Data;");
+        content.add("import lombok.AllArgsConstructor;");
+        content.add("import lombok.NoArgsConstructor;");
 
+        importTableFieldType(tableInfo, content);
+    }
+
+    /**
+     * 添加import语句
+     *
+     * @param tableInfo raw materials
+     * @param content   output
+     */
+    private static void addImportExt(TableInfo tableInfo, List<String> content) {
+        content.add("");
+        content.add("import lombok.AllArgsConstructor;");
+        content.add("import lombok.Builder;");
+        content.add("import lombok.Data;");
+        content.add("import lombok.NoArgsConstructor;");
+
+        importTableFieldType(tableInfo, content);
+    }
+
+    /**
+     * 导入数据库字段依赖
+     * @param tableInfo
+     * @param content
+     */
+    private static void importTableFieldType(TableInfo tableInfo, List<String> content) {
         boolean importBlob = false;
         boolean importClob = false;
         boolean importDate = false;
@@ -153,20 +207,6 @@ public class DomainGenerator extends BaseGenerator {
                 }
             }
         }
-    }
-
-    /**
-     * 添加import语句
-     *
-     * @param tableInfo raw materials
-     * @param content   output
-     */
-    private static void addImportExt(TableInfo tableInfo, List<String> content) {
-        content.add("");
-        content.add("import lombok.AllArgsConstructor;");
-        content.add("import lombok.Builder;");
-        content.add("import lombok.Data;");
-        content.add("import lombok.NoArgsConstructor;");
     }
 
     private static boolean importPackage(List<String> content, boolean imported, DataTypeTranslator.Java2Mysql typeEnum) {

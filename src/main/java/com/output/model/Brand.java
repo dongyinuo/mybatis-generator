@@ -1,6 +1,8 @@
 package com.output.model;
 
 import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
@@ -10,6 +12,8 @@ import java.util.Date;
  * @date 2019-03-11
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Brand {
 
     /**
