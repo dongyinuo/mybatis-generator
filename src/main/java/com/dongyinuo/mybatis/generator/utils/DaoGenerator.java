@@ -23,7 +23,7 @@ public class DaoGenerator extends BaseGenerator {
     public static List<String> generate(ConfigInfo configInfo, TableInfo tableInfo) {
         List<String> content = new ArrayList<>();
         addPackage(configInfo.getModulePackagePath(), content);
-        addImport(configInfo.getDomainPackagePath(), tableInfo.getClassName() + "Ext" + configInfo.getDomainPostfix(), content);
+        addImport(configInfo.getDomainPackagePath(), tableInfo.getClassName() + configInfo.getDomainPostfix(), content);
         addClassComment(tableInfo.getComment(), content);
         addClass(configInfo, tableInfo, content);
         return content;
@@ -42,8 +42,8 @@ public class DaoGenerator extends BaseGenerator {
                 break;
             }
         }
-        String className = tableInfo.getClassName() + configInfo.getDomainPostfix() + "Ext";
-        content.add("@Repository(\"" + tableInfo.getClassName() +  configInfo.getDaoPostfix() + "Mapper\")");
+        String className = tableInfo.getClassName() + configInfo.getDomainPostfix();
+        content.add("@Repository(\"" + toLowerCaseFirstOne(tableInfo.getClassName()) +  configInfo.getDaoPostfix() + "\")");
         content.add("public interface " + tableInfo.getClassName() +  configInfo.getDaoPostfix() + " {");
         addInsert(className, content);
         addInsertSelective(className, content);
@@ -58,6 +58,19 @@ public class DaoGenerator extends BaseGenerator {
         addCount(className, content);
 
         content.add("}");
+    }
+
+    /**
+     * 首字母转小写
+     * @param s
+     * @return
+     */
+    public static String toLowerCaseFirstOne(String s){
+        if(Character.isLowerCase(s.charAt(0))){
+            return s;
+        } else{
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
     }
 
     /**

@@ -1,38 +1,38 @@
 package com.output;
 
 import org.springframework.stereotype.Repository;
-import com.output.model.ProdCategoryExt;
+import com.output.model.FinancingPayment;
 import java.util.List;
 
 /**
- * 数据访问
+ * 支持融资趸付数据访问
  * 
  * @author dongyinuo
- * @date 2019-03-11
+ * @date 2019-09-17
  */ 
-@Repository("ProdCategoryMapperMapper")
-public interface ProdCategoryMapper {
+@Repository("financingPaymentMapper")
+public interface FinancingPaymentMapper {
 
     /**
      * 插入一条数据
      * 
-     * @param prodCategoryExt 待插入对象
+     * @param financingPayment 待插入对象
      */
-    void insert(ProdCategoryExt prodCategoryExt);
+    void insert(FinancingPayment financingPayment);
 
     /**
      * 插入一条数据
      * 
-     * @param prodCategoryExt 待插入对象
+     * @param financingPayment 待插入对象
      */
-    void insertSelective(ProdCategoryExt prodCategoryExt);
+    void insertSelective(FinancingPayment financingPayment);
 
     /**
      * 批量插入多条数据
      * 
      * @param list 待插入对象列表
      */
-    void batchInsert(List<ProdCategoryExt> list);
+    void batchInsert(List<FinancingPayment> list);
 
     /**
      * 根据主键删除
@@ -48,7 +48,7 @@ public interface ProdCategoryMapper {
      * @param condition 要更新的对象
      * @return 影响条数
      */
-    int updateByPrimaryKey(ProdCategoryExt condition);
+    int updateByPrimaryKey(FinancingPayment condition);
 
     /**
      * 根据主键查询
@@ -56,7 +56,7 @@ public interface ProdCategoryMapper {
      * @param id 主键值
      * @return 根据主键查询到的对象
      */
-    ProdCategoryExt queryByPrimaryKey(Long id);
+    FinancingPayment queryByPrimaryKey(Long id);
 
     /**
      * 根据条件查询一条记录
@@ -64,7 +64,7 @@ public interface ProdCategoryMapper {
      * @param condition 查询条件
      * @return 查询出来的对象
      */
-    ProdCategoryExt queryOne(ProdCategoryExt condition);
+    FinancingPayment queryOne(FinancingPayment condition);
 
     /**
      * 根据条件查询列表
@@ -72,7 +72,7 @@ public interface ProdCategoryMapper {
      * @param condition 查询条件
      * @return 查询出来的对象列表
      */
-    List<ProdCategoryExt> queryList(ProdCategoryExt condition);
+    List<FinancingPayment> queryList(FinancingPayment condition);
 
     /**
      * 根据条件统计数量
@@ -80,5 +80,5 @@ public interface ProdCategoryMapper {
      * @param condition 统计条件
      * @return 记录总数
      */
-    int count(ProdCategoryExt condition);
+    int count(FinancingPayment condition);
 }

@@ -103,7 +103,9 @@ public class DomainGenerator extends BaseGenerator {
      * @param content
      */
     private static void addAnnotation(List<String> content) {
-        content.add("@Data");
+        content.add("@Getter");
+        content.add("@Setter");
+        content.add("@ToString");
         content.add("@NoArgsConstructor");
         content.add("@AllArgsConstructor");
     }
@@ -113,9 +115,10 @@ public class DomainGenerator extends BaseGenerator {
      * @param content
      */
     private static void addAnnotationExt(List<String> content) {
-        content.add("@Data");
+        content.add("@Getter");
+        content.add("@Setter");
+        content.add("@ToString");
         content.add("@NoArgsConstructor");
-        content.add("@AllArgsConstructor");
     }
 
     /**
@@ -144,9 +147,7 @@ public class DomainGenerator extends BaseGenerator {
      */
     private static void addImport(TableInfo tableInfo, List<String> content) {
         content.add("");
-        content.add("import lombok.Data;");
-        content.add("import lombok.AllArgsConstructor;");
-        content.add("import lombok.NoArgsConstructor;");
+        content.add("import lombok.*;");
 
         importTableFieldType(tableInfo, content);
     }
@@ -159,10 +160,7 @@ public class DomainGenerator extends BaseGenerator {
      */
     private static void addImportExt(TableInfo tableInfo, List<String> content) {
         content.add("");
-        content.add("import lombok.AllArgsConstructor;");
-        content.add("import lombok.Builder;");
-        content.add("import lombok.Data;");
-        content.add("import lombok.NoArgsConstructor;");
+        content.add("import lombok.*;");
 
         importTableFieldType(tableInfo, content);
     }

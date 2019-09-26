@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.output.ZhimaAuthorizeResultMapper">
+    <resultMap id="zhimaAuthorizeResult" type="com.output.model.ZhimaAuthorizeResult">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="customer_id" property="customerId" jdbcType="BIGINT"/>
+        <result column="ali_user_id" property="aliUserId" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="FLOAT"/>
+        <result column="decision" property="decision" jdbcType="VARCHAR"/>
+        <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR"/>
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="order_status" property="orderStatus" jdbcType="VARCHAR"/>
+        <result column="out_order_no" property="outOrderNo" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="cdate" property="cdate" jdbcType="TIMESTAMP"/>
+        <result column="mdate" property="mdate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 基础字段 -->
+    <sql id="Base_Columns">
+        `id`,
+        <include refid="Columns_For_Insert"/>
+    </sql>
+
+    <!-- Insert使用字段 -->
+    <sql id="Columns_For_Insert">
+        `customer_id`, `ali_user_id`, `amount`, `decision`, `reject_reason`, `order_no`, `order_status`, 
+        `out_order_no`, `status`, `cdate`, `mdate`
+    </sql>
+
+    <!-- 插入数据 -->
+    <insert id="insert" parameterType="com.output.model.ZhimaAuthorizeResultExt" useGeneratedKeys="true" keyProperty="id">
+        insert into t_zhima_authorize_result
+        (    <include refid="Columns_For_Insert"/>    )
+        values(
+            #{customerId, jdbcType=BIGINT}, #{aliUserId, jdbcType=VARCHAR}, #{amount, jdbcType=FLOAT}, 
+            #{decision, jdbcType=VARCHAR}, #{rejectReason, jdbcType=VARCHAR}, #{orderNo, jdbcType=VARCHAR}, 
+            #{orderStatus, jdbcType=VARCHAR}, #{outOrderNo, jdbcType=VARCHAR}, #{status, jdbcType=TINYINT}, 
+            #{cdate, jdbcType=TIMESTAMP}, #{mdate, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!-- 选择性插入插入数据 -->
+    <insert id="insertSelective" parameterType="com.output.model.ZhimaAuthorizeResultExt" useGeneratedKeys="true" keyProperty="id">
+        insert into t_zhima_authorize_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test=" id != null " >
+                `id`,
+            </if>
+            <if test=" customerId != null " >
+                `customer_id`,
+            </if>
+            <if test=" aliUserId != null and aliUserId != '' " >
+                `ali_user_id`,
+            </if>
+            <if test=" amount != null " >
+                `amount`,
+            </if>
+            <if test=" decision != null and decision != '' " >
+                `decision`,
+            </if>
+            <if test=" rejectReason != null and rejectReason != '' " >
+                `reject_reason`,
+            </if>
+            <if test=" orderNo != null and orderNo != '' " >
+                `order_no`,
+            </if>
+            <if test=" orderStatus != null and orderStatus != '' " >
+                `order_status`,
+            </if>
+            <if test=" outOrderNo != null and outOrderNo != '' " >
+                `out_order_no`,
+            </if>
+            <if test=" status != null " >
+                `status`,
+            </if>
+            <if test=" cdate != null " >
+                `cdate`,
+            </if>
+            <if test=" mdate != null " >
+                `mdate`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test=" id != null " >
+                #{id, jdbcType=BIGINT},
+            </if>
+            <if test=" customerId != null " >
+                #{customerId, jdbcType=BIGINT},
+            </if>
+            <if test=" aliUserId != null and aliUserId != '' " >
+                #{aliUserId, jdbcType=VARCHAR},
+            </if>
+            <if test=" amount != null " >
+                #{amount, jdbcType=FLOAT},
+            </if>
+            <if test=" decision != null and decision != '' " >
+                #{decision, jdbcType=VARCHAR},
+            </if>
+            <if test=" rejectReason != null and rejectReason != '' " >
+                #{rejectReason, jdbcType=VARCHAR},
+            </if>
+            <if test=" orderNo != null and orderNo != '' " >
+                #{orderNo, jdbcType=VARCHAR},
+            </if>
+            <if test=" orderStatus != null and orderStatus != '' " >
+                #{orderStatus, jdbcType=VARCHAR},
+            </if>
+            <if test=" outOrderNo != null and outOrderNo != '' " >
+                #{outOrderNo, jdbcType=VARCHAR},
+            </if>
+            <if test=" status != null " >
+                #{status, jdbcType=TINYINT},
+            </if>
+            <if test=" cdate != null " >
+                #{cdate, jdbcType=TIMESTAMP},
+            </if>
+            <if test=" mdate != null " >
+                #{mdate, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 批量插入 -->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into t_zhima_authorize_result
+        (    <include refid="Columns_For_Insert"/>    )
+        values
+        <foreach collection="list" item="item" separator="," >
+            (
+                #{item.customerId, jdbcType=BIGINT}, #{item.aliUserId, jdbcType=VARCHAR}, 
+                #{item.amount, jdbcType=FLOAT}, #{item.decision, jdbcType=VARCHAR}, 
+                #{item.rejectReason, jdbcType=VARCHAR}, #{item.orderNo, jdbcType=VARCHAR}, 
+                #{item.orderStatus, jdbcType=VARCHAR}, #{item.outOrderNo, jdbcType=VARCHAR}, 
+                #{item.status, jdbcType=TINYINT}, #{item.cdate, jdbcType=TIMESTAMP}, #{item.mdate, jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_zhima_authorize_result
+        where `id` = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <!-- 根据主键更新非空字段 -->
+    <update id="updateByPrimaryKey" parameterType="com.output.model.ZhimaAuthorizeResultExt">
+        update t_zhima_authorize_result
+        <set>
+            <if test=" customerId != null " >
+                `customer_id` = #{customerId, jdbcType=BIGINT},
+            </if>
+            <if test=" aliUserId != null and aliUserId != '' " >
+                `ali_user_id` = #{aliUserId, jdbcType=VARCHAR},
+            </if>
+            <if test=" amount != null " >
+                `amount` = #{amount, jdbcType=FLOAT},
+            </if>
+            <if test=" decision != null and decision != '' " >
+                `decision` = #{decision, jdbcType=VARCHAR},
+            </if>
+            <if test=" rejectReason != null and rejectReason != '' " >
+                `reject_reason` = #{rejectReason, jdbcType=VARCHAR},
+            </if>
+            <if test=" orderNo != null and orderNo != '' " >
+                `order_no` = #{orderNo, jdbcType=VARCHAR},
+            </if>
+            <if test=" orderStatus != null and orderStatus != '' " >
+                `order_status` = #{orderStatus, jdbcType=VARCHAR},
+            </if>
+            <if test=" outOrderNo != null and outOrderNo != '' " >
+                `out_order_no` = #{outOrderNo, jdbcType=VARCHAR},
+            </if>
+            <if test=" status != null " >
+                `status` = #{status, jdbcType=TINYINT},
+            </if>
+            <if test=" cdate != null " >
+                `cdate` = #{cdate, jdbcType=TIMESTAMP},
+            </if>
+            <if test=" mdate != null " >
+                `mdate` = #{mdate, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where `id` = #{id, jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据主键查询 -->
+    <select id="queryByPrimaryKey" parameterType="java.lang.Long" resultMap="zhimaAuthorizeResult">
+        select <include refid="Base_Columns"/>
+        from t_zhima_authorize_result
+        where `id` = #{id, jdbcType=BIGINT}
+    </select>
+
+    <!-- 根据条件查询一条记录 -->
+    <select id="queryOne" parameterType="com.output.model.ZhimaAuthorizeResultExt" resultMap="zhimaAuthorizeResult">
+        select <include refid="Base_Columns"/>
+        from t_zhima_authorize_result
+        <where>
+            <if test=" id != null " >
+                AND `id` = #{id, jdbcType=BIGINT}
+            </if>
+            <if test=" customerId != null " >
+                AND `customer_id` = #{customerId, jdbcType=BIGINT}
+            </if>
+            <if test=" aliUserId != null and aliUserId != '' " >
+                AND `ali_user_id` = #{aliUserId, jdbcType=VARCHAR}
+            </if>
+            <if test=" amount != null " >
+                AND `amount` = #{amount, jdbcType=FLOAT}
+            </if>
+            <if test=" decision != null and decision != '' " >
+                AND `decision` = #{decision, jdbcType=VARCHAR}
+            </if>
+            <if test=" rejectReason != null and rejectReason != '' " >
+                AND `reject_reason` = #{rejectReason, jdbcType=VARCHAR}
+            </if>
+            <if test=" orderNo != null and orderNo != '' " >
+                AND `order_no` = #{orderNo, jdbcType=VARCHAR}
+            </if>
+            <if test=" orderStatus != null and orderStatus != '' " >
+                AND `order_status` = #{orderStatus, jdbcType=VARCHAR}
+            </if>
+            <if test=" outOrderNo != null and outOrderNo != '' " >
+                AND `out_order_no` = #{outOrderNo, jdbcType=VARCHAR}
+            </if>
+            <if test=" status != null " >
+                AND `status` = #{status, jdbcType=TINYINT}
+            </if>
+            <if test=" cdate != null " >
+                AND `cdate` = #{cdate, jdbcType=TIMESTAMP}
+            </if>
+            <if test=" mdate != null " >
+                AND `mdate` = #{mdate, jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!-- 根据条件查询列表 -->
+    <select id="queryList" parameterType="com.output.model.ZhimaAuthorizeResultExt" resultMap="zhimaAuthorizeResult">
+        select <include refid="Base_Columns"/>
+        from t_zhima_authorize_result
+        <where>
+            <if test=" id != null " >
+                AND `id` = #{id, jdbcType=BIGINT}
+            </if>
+            <if test=" customerId != null " >
+                AND `customer_id` = #{customerId, jdbcType=BIGINT}
+            </if>
+            <if test=" aliUserId != null and aliUserId != '' " >
+                AND `ali_user_id` = #{aliUserId, jdbcType=VARCHAR}
+            </if>
+            <if test=" amount != null " >
+                AND `amount` = #{amount, jdbcType=FLOAT}
+            </if>
+            <if test=" decision != null and decision != '' " >
+                AND `decision` = #{decision, jdbcType=VARCHAR}
+            </if>
+            <if test=" rejectReason != null and rejectReason != '' " >
+                AND `reject_reason` = #{rejectReason, jdbcType=VARCHAR}
+            </if>
+            <if test=" orderNo != null and orderNo != '' " >
+                AND `order_no` = #{orderNo, jdbcType=VARCHAR}
+            </if>
+            <if test=" orderStatus != null and orderStatus != '' " >
+                AND `order_status` = #{orderStatus, jdbcType=VARCHAR}
+            </if>
+            <if test=" outOrderNo != null and outOrderNo != '' " >
+                AND `out_order_no` = #{outOrderNo, jdbcType=VARCHAR}
+            </if>
+            <if test=" status != null " >
+                AND `status` = #{status, jdbcType=TINYINT}
+            </if>
+            <if test=" cdate != null " >
+                AND `cdate` = #{cdate, jdbcType=TIMESTAMP}
+            </if>
+            <if test=" mdate != null " >
+                AND `mdate` = #{mdate, jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+    <!-- 统计数量 -->
+    <select id="count" parameterType="com.output.model.ZhimaAuthorizeResultExt" resultType="java.lang.Integer">
+        select count(*)
+        from t_zhima_authorize_result
+        <where>
+            <if test=" id != null " >
+                AND `id` = #{id, jdbcType=BIGINT}
+            </if>
+            <if test=" customerId != null " >
+                AND `customer_id` = #{customerId, jdbcType=BIGINT}
+            </if>
+            <if test=" aliUserId != null and aliUserId != '' " >
+                AND `ali_user_id` = #{aliUserId, jdbcType=VARCHAR}
+            </if>
+            <if test=" amount != null " >
+                AND `amount` = #{amount, jdbcType=FLOAT}
+            </if>
+            <if test=" decision != null and decision != '' " >
+                AND `decision` = #{decision, jdbcType=VARCHAR}
+            </if>
+            <if test=" rejectReason != null and rejectReason != '' " >
+                AND `reject_reason` = #{rejectReason, jdbcType=VARCHAR}
+            </if>
+            <if test=" orderNo != null and orderNo != '' " >
+                AND `order_no` = #{orderNo, jdbcType=VARCHAR}
+            </if>
+            <if test=" orderStatus != null and orderStatus != '' " >
+                AND `order_status` = #{orderStatus, jdbcType=VARCHAR}
+            </if>
+            <if test=" outOrderNo != null and outOrderNo != '' " >
+                AND `out_order_no` = #{outOrderNo, jdbcType=VARCHAR}
+            </if>
+            <if test=" status != null " >
+                AND `status` = #{status, jdbcType=TINYINT}
+            </if>
+            <if test=" cdate != null " >
+                AND `cdate` = #{cdate, jdbcType=TIMESTAMP}
+            </if>
+            <if test=" mdate != null " >
+                AND `mdate` = #{mdate, jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+</mapper>

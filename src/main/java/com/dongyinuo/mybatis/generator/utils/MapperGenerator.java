@@ -148,6 +148,28 @@ public class MapperGenerator {
     }
 
     /**
+     * 添加if-insert
+     *
+     * @param columnInfos
+     * @param content
+     */
+    private static void if4Insert(List<ColumnInfo> columnInfos, List<String> content) {
+        for (ColumnInfo columnInfo : columnInfos) {
+            String property = columnInfo.getProperty();
+            if ("String".equals(columnInfo.getType().java)) {
+                content.add(CommonUtil.getNTab(3) + "<if test=\" " + property + " != null and " + property + " != '' \" >");
+            } else {
+                content.add(CommonUtil.getNTab(3) + "<if test=\" " + property + " != null \" >");
+            }
+            StringBuilder sb0 = new StringBuilder(CommonUtil.getNTab(4));
+            StringBuilder columnEqualsProperty = new StringBuilder().append(COLUMN.replace("$property", property).replace("$jdbcType", columnInfo.getType().mybatis));
+            sb0.append(columnEqualsProperty).append(",");
+            content.add(sb0.toString());
+            content.add(CommonUtil.getNTab(3) + "</if>");
+        }
+    }
+
+    /**
      * 添加if-test语句
      * 0-select, 1-update
      *
@@ -195,7 +217,7 @@ public class MapperGenerator {
                 content.add(CommonUtil.getNTab(3) + "<if test=\" " + property + " != null \" >");
             }
             StringBuilder sb0 = new StringBuilder(CommonUtil.getNTab(4));
-            StringBuilder columnEqualsProperty = new StringBuilder().append("`").append(columnInfo.getColumnName());
+            StringBuilder columnEqualsProperty = new StringBuilder().append("`").append(columnInfo.getColumnName()).append("`");
             sb0.append(columnEqualsProperty).append(",");
             content.add(sb0.toString());
             content.add(CommonUtil.getNTab(3) + "</if>");
@@ -367,7 +389,7 @@ public class MapperGenerator {
         listSelectiveProperty(tableInfo.getColumnInfos(), content);
         content.add(CommonUtil.getNTab(2) + "</trim>");
         content.add(CommonUtil.getNTab(2) + "<trim prefix=\"values (\" suffix=\")\" suffixOverrides=\",\">");
-        if4SelectOrUpdate(tableInfo.getColumnInfos(), content, 1);
+        if4Insert(tableInfo.getColumnInfos(), content);
         content.add(CommonUtil.getNTab(2) + "</trim>");
         content.add(CommonUtil.SPACE4 + "</insert>");
     }

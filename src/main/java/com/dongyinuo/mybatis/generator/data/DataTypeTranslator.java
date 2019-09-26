@@ -71,6 +71,7 @@ public class DataTypeTranslator {
         INTEGER("INTEGER", "INTEGER", "Integer", "java.lang.Integer", false),
         INT("INT", "INTEGER", "Integer", "java.lang.Integer", false),
         TINYINT("TINYINT", "TINYINT", "Byte", "java.lang.Byte", false),
+        BIT("BIT", "BIT", "Byte", "java.lang.Byte", false),
         VARCHAR("VARCHAR", "VARCHAR", "String", "java.lang.String", false),
         REAL("REAL", "REAL", "FLOAT", "java.lang.Float", false),
         SMALLINT("SMALLINT", "SMALLINT", "Short", "java.lang.Short", false),

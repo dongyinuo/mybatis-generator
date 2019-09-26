@@ -23,11 +23,11 @@ public class MybatisGenerator {
 
         // 设置作者名
         BaseGenerator.setAUTHOR("dongyinuo");
-        DbUtil.initConnection("jdbc:mysql://10.44.63.143/db_auction", "auction", "cm1ZwY0MrMZSoUvcowr5");
+        DbUtil.initConnection("jdbc:mysql://localhost/arno", "root", "root");
 
         // 生成逆向生成表信息
-        String tableSchema = "db_auction";
-        List<String> tables = Arrays.asList("t_brand", "t_prod_category");
+        String tableSchema = "arno";
+        List<String> tables = Arrays.asList("t_financing_payment");
         List<TableInfo> tableInfos = SchemaUtil.getTableInfos(tableSchema, tables);
 
         // dao、model、mapper 生成路径配置

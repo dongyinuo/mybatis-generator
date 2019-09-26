@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.output.BrandMapper">
-    <resultMap id="brand" type="com.output.model.Brand">
+<mapper namespace="com.output.OrderFlowNumberMapper">
+    <resultMap id="orderFlowNumber" type="com.output.model.OrderFlowNumber">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="brand_name" property="brandName" jdbcType="VARCHAR"/>
-        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="bank_flow_numbers" property="bankFlowNumbers" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -18,92 +18,93 @@
 
     <!-- Insert使用字段 -->
     <sql id="Columns_For_Insert">
-        `brand_name`, `sort`, `status`, `create_time`, `update_time`
+        `order_no`, `bank_flow_numbers`, `status`, `create_time`, `update_time`
     </sql>
 
     <!-- 插入数据 -->
-    <insert id="insert" parameterType="com.output.model.BrandExt" useGeneratedKeys="true" keyProperty="id">
-        insert into t_brand
+    <insert id="insert" parameterType="com.output.model.OrderFlowNumberExt" useGeneratedKeys="true" keyProperty="id">
+        insert into t_order_flow_number
         (    <include refid="Columns_For_Insert"/>    )
         values(
-            #{brandName, jdbcType=VARCHAR}, #{sort, jdbcType=INTEGER}, #{status, jdbcType=TINYINT}, 
+            #{orderNo, jdbcType=VARCHAR}, #{bankFlowNumbers, jdbcType=VARCHAR}, #{status, jdbcType=TINYINT}, 
             #{createTime, jdbcType=TIMESTAMP}, #{updateTime, jdbcType=TIMESTAMP}
         )
     </insert>
 
     <!-- 选择性插入插入数据 -->
-    <insert id="insertSelective" parameterType="com.output.model.BrandExt" useGeneratedKeys="true" keyProperty="id">
-        insert into t_brand
+    <insert id="insertSelective" parameterType="com.output.model.OrderFlowNumberExt" useGeneratedKeys="true" keyProperty="id">
+        insert into t_order_flow_number
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test=" id != null " >
-                `id,
+                `id`,
             </if>
-            <if test=" brandName != null and brandName != '' " >
-                `brand_name,
+            <if test=" orderNo != null and orderNo != '' " >
+                `order_no`,
             </if>
-            <if test=" sort != null " >
-                `sort,
+            <if test=" bankFlowNumbers != null and bankFlowNumbers != '' " >
+                `bank_flow_numbers`,
             </if>
             <if test=" status != null " >
-                `status,
+                `status`,
             </if>
             <if test=" createTime != null " >
-                `create_time,
+                `create_time`,
             </if>
             <if test=" updateTime != null " >
-                `update_time,
+                `update_time`,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test=" id != null " >
-                `id` = #{id, jdbcType=BIGINT},
+                #{id, jdbcType=BIGINT},
             </if>
-            <if test=" brandName != null and brandName != '' " >
-                `brand_name` = #{brandName, jdbcType=VARCHAR},
+            <if test=" orderNo != null and orderNo != '' " >
+                #{orderNo, jdbcType=VARCHAR},
             </if>
-            <if test=" sort != null " >
-                `sort` = #{sort, jdbcType=INTEGER},
+            <if test=" bankFlowNumbers != null and bankFlowNumbers != '' " >
+                #{bankFlowNumbers, jdbcType=VARCHAR},
             </if>
             <if test=" status != null " >
-                `status` = #{status, jdbcType=TINYINT},
+                #{status, jdbcType=TINYINT},
             </if>
             <if test=" createTime != null " >
-                `create_time` = #{createTime, jdbcType=TIMESTAMP},
+                #{createTime, jdbcType=TIMESTAMP},
             </if>
             <if test=" updateTime != null " >
-                `update_time` = #{updateTime, jdbcType=TIMESTAMP},
+                #{updateTime, jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
 
     <!-- 批量插入 -->
     <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        insert into t_brand
+        insert into t_order_flow_number
         (    <include refid="Columns_For_Insert"/>    )
         values
         <foreach collection="list" item="item" separator="," >
             (
-                #{item.brandName, jdbcType=VARCHAR}, #{item.sort, jdbcType=INTEGER}, #{item.status, jdbcType=TINYINT}, 
-                #{item.createTime, jdbcType=TIMESTAMP}, #{item.updateTime, jdbcType=TIMESTAMP}
+                #{item.orderNo, jdbcType=VARCHAR}, #{item.bankFlowNumbers, jdbcType=VARCHAR}, 
+                #{item.status, jdbcType=TINYINT}, #{item.createTime, jdbcType=TIMESTAMP}, 
+                #{item.updateTime, jdbcType=TIMESTAMP}
             )
         </foreach>
     </insert>
 
     <!-- 根据主键删除 -->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from t_brand
+        delete from t_order_flow_number
         where `id` = #{id, jdbcType=BIGINT}
     </delete>
 
     <!-- 根据主键更新非空字段 -->
-    <update id="updateByPrimaryKey" parameterType="com.output.model.BrandExt">
-        update t_brand
+    <update id="updateByPrimaryKey" parameterType="com.output.model.OrderFlowNumberExt">
+        update t_order_flow_number
         <set>
-            <if test=" brandName != null and brandName != '' " >
-                `brand_name` = #{brandName, jdbcType=VARCHAR},
+            <if test=" orderNo != null and orderNo != '' " >
+                `order_no` = #{orderNo, jdbcType=VARCHAR},
             </if>
-            <if test=" sort != null " >
-                `sort` = #{sort, jdbcType=INTEGER},
+            <if test=" bankFlowNumbers != null and bankFlowNumbers != '' " >
+                `bank_flow_numbers` = #{bankFlowNumbers, jdbcType=VARCHAR},
             </if>
             <if test=" status != null " >
                 `status` = #{status, jdbcType=TINYINT},
@@ -119,25 +120,25 @@
     </update>
 
     <!-- 根据主键查询 -->
-    <select id="queryByPrimaryKey" parameterType="java.lang.Long" resultMap="brand">
+    <select id="queryByPrimaryKey" parameterType="java.lang.Long" resultMap="orderFlowNumber">
         select <include refid="Base_Columns"/>
-        from t_brand
+        from t_order_flow_number
         where `id` = #{id, jdbcType=BIGINT}
     </select>
 
     <!-- 根据条件查询一条记录 -->
-    <select id="queryOne" parameterType="com.output.model.BrandExt" resultMap="brand">
+    <select id="queryOne" parameterType="com.output.model.OrderFlowNumberExt" resultMap="orderFlowNumber">
         select <include refid="Base_Columns"/>
-        from t_brand
+        from t_order_flow_number
         <where>
             <if test=" id != null " >
                 AND `id` = #{id, jdbcType=BIGINT}
             </if>
-            <if test=" brandName != null and brandName != '' " >
-                AND `brand_name` = #{brandName, jdbcType=VARCHAR}
+            <if test=" orderNo != null and orderNo != '' " >
+                AND `order_no` = #{orderNo, jdbcType=VARCHAR}
             </if>
-            <if test=" sort != null " >
-                AND `sort` = #{sort, jdbcType=INTEGER}
+            <if test=" bankFlowNumbers != null and bankFlowNumbers != '' " >
+                AND `bank_flow_numbers` = #{bankFlowNumbers, jdbcType=VARCHAR}
             </if>
             <if test=" status != null " >
                 AND `status` = #{status, jdbcType=TINYINT}
@@ -153,18 +154,18 @@
     </select>
 
     <!-- 根据条件查询列表 -->
-    <select id="queryList" parameterType="com.output.model.BrandExt" resultMap="brand">
+    <select id="queryList" parameterType="com.output.model.OrderFlowNumberExt" resultMap="orderFlowNumber">
         select <include refid="Base_Columns"/>
-        from t_brand
+        from t_order_flow_number
         <where>
             <if test=" id != null " >
                 AND `id` = #{id, jdbcType=BIGINT}
             </if>
-            <if test=" brandName != null and brandName != '' " >
-                AND `brand_name` = #{brandName, jdbcType=VARCHAR}
+            <if test=" orderNo != null and orderNo != '' " >
+                AND `order_no` = #{orderNo, jdbcType=VARCHAR}
             </if>
-            <if test=" sort != null " >
-                AND `sort` = #{sort, jdbcType=INTEGER}
+            <if test=" bankFlowNumbers != null and bankFlowNumbers != '' " >
+                AND `bank_flow_numbers` = #{bankFlowNumbers, jdbcType=VARCHAR}
             </if>
             <if test=" status != null " >
                 AND `status` = #{status, jdbcType=TINYINT}
@@ -179,18 +180,18 @@
     </select>
 
     <!-- 统计数量 -->
-    <select id="count" parameterType="com.output.model.BrandExt" resultType="java.lang.Integer">
+    <select id="count" parameterType="com.output.model.OrderFlowNumberExt" resultType="java.lang.Integer">
         select count(*)
-        from t_brand
+        from t_order_flow_number
         <where>
             <if test=" id != null " >
                 AND `id` = #{id, jdbcType=BIGINT}
             </if>
-            <if test=" brandName != null and brandName != '' " >
-                AND `brand_name` = #{brandName, jdbcType=VARCHAR}
+            <if test=" orderNo != null and orderNo != '' " >
+                AND `order_no` = #{orderNo, jdbcType=VARCHAR}
             </if>
-            <if test=" sort != null " >
-                AND `sort` = #{sort, jdbcType=INTEGER}
+            <if test=" bankFlowNumbers != null and bankFlowNumbers != '' " >
+                AND `bank_flow_numbers` = #{bankFlowNumbers, jdbcType=VARCHAR}
             </if>
             <if test=" status != null " >
                 AND `status` = #{status, jdbcType=TINYINT}
