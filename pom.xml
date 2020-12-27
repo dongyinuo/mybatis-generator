@@ -17,6 +17,13 @@
         <java.version>1.8</java.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:http://git.shuiditech.com/sdb/sdb-broker-order.git</connection>
+        <developerConnection>scm:git:git@git.shuiditech.com:sdb/sdb-broker-order.git</developerConnection>
+        <url>http://git.shuiditech.com/sdb/sdb-broker-order.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

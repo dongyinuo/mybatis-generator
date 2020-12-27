@@ -65,6 +65,7 @@ public class DataTypeTranslator {
         BIGINT("BIGINT", "BIGINT", "Long", "java.lang.Long", false),
         CHAR("CHAR", "CHAR", "String", "java.lang.String", false),
         TEXT("TEXT", "CLOB", "String", "java.lang.String", false),
+        LONGTEXT("LONGTEXT", "CLOB", "String", "java.lang.String", false),
         JSON("JSON", "String", "String", "java.lang.String", false),
         DOUBLE("DOUBLE", "DOUBLE", "Double", "java.lang.Double", false),
         FLOAT("FLOAT", "FLOAT", "Double", "java.lang.Double", false),

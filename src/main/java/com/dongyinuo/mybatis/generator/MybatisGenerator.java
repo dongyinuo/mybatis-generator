@@ -11,6 +11,7 @@ import com.dongyinuo.mybatis.generator.utils.FileGenerator;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class MybatisGenerator {
 
         // 生成逆向生成表信息
         String tableSchema = "arno";
-        List<String> tables = Arrays.asList("t_financing_payment");
+        List<String> tables = Arrays.asList("t_order_coupon_log");
         List<TableInfo> tableInfos = SchemaUtil.getTableInfos(tableSchema, tables);
 
         // dao、model、mapper 生成路径配置
@@ -39,5 +40,6 @@ public class MybatisGenerator {
         // 生成
         FileGenerator.generate(configInfo, tableInfos);
         System.out.println("全部完成");
+
     }
 }

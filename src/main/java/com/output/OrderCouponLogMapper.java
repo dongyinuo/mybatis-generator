@@ -1,38 +1,38 @@
 package com.output;
 
 import org.springframework.stereotype.Repository;
-import com.output.model.FinancingPayment;
+import com.output.model.OrderCouponLog;
 import java.util.List;
 
 /**
- * 支持融资趸付数据访问
+ * 数据访问
  * 
  * @author dongyinuo
- * @date 2019-09-17
+ * @date 2020-03-05
  */ 
-@Repository("financingPaymentMapper")
-public interface FinancingPaymentMapper {
+@Repository("orderCouponLogMapper")
+public interface OrderCouponLogMapper {
 
     /**
      * 插入一条数据
      * 
-     * @param financingPayment 待插入对象
+     * @param orderCouponLog 待插入对象
      */
-    void insert(FinancingPayment financingPayment);
+    void insert(OrderCouponLog orderCouponLog);
 
     /**
      * 插入一条数据
      * 
-     * @param financingPayment 待插入对象
+     * @param orderCouponLog 待插入对象
      */
-    void insertSelective(FinancingPayment financingPayment);
+    void insertSelective(OrderCouponLog orderCouponLog);
 
     /**
      * 批量插入多条数据
      * 
      * @param list 待插入对象列表
      */
-    void batchInsert(List<FinancingPayment> list);
+    void batchInsert(List<OrderCouponLog> list);
 
     /**
      * 根据主键删除
@@ -48,7 +48,7 @@ public interface FinancingPaymentMapper {
      * @param condition 要更新的对象
      * @return 影响条数
      */
-    int updateByPrimaryKey(FinancingPayment condition);
+    int updateByPrimaryKey(OrderCouponLog condition);
 
     /**
      * 根据主键查询
@@ -56,7 +56,7 @@ public interface FinancingPaymentMapper {
      * @param id 主键值
      * @return 根据主键查询到的对象
      */
-    FinancingPayment queryByPrimaryKey(Long id);
+    OrderCouponLog queryByPrimaryKey(Long id);
 
     /**
      * 根据条件查询一条记录
@@ -64,7 +64,7 @@ public interface FinancingPaymentMapper {
      * @param condition 查询条件
      * @return 查询出来的对象
      */
-    FinancingPayment queryOne(FinancingPayment condition);
+    OrderCouponLog queryOne(OrderCouponLog condition);
 
     /**
      * 根据条件查询列表
@@ -72,7 +72,7 @@ public interface FinancingPaymentMapper {
      * @param condition 查询条件
      * @return 查询出来的对象列表
      */
-    List<FinancingPayment> queryList(FinancingPayment condition);
+    List<OrderCouponLog> queryList(OrderCouponLog condition);
 
     /**
      * 根据条件统计数量
@@ -80,5 +80,5 @@ public interface FinancingPaymentMapper {
      * @param condition 统计条件
      * @return 记录总数
      */
-    int count(FinancingPayment condition);
+    int count(OrderCouponLog condition);
 }
