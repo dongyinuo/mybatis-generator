@@ -18,9 +18,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:http://git.shuiditech.com/sdb/sdb-broker-order.git</connection>
-        <developerConnection>scm:git:git@git.shuiditech.com:sdb/sdb-broker-order.git</developerConnection>
-        <url>http://git.shuiditech.com/sdb/sdb-broker-order.git</url>
+        <connection>scm:git:http://github.com/dongyinuo/mybatis-generator.git</connection>
+        <developerConnection>scm:git:git@github.com/dongyinuo/mybatis-generator.git</developerConnection>
+        <url>https://github.com/dongyinuo/mybatis-generator.git</url>
         <tag>HEAD</tag>
     </scm>
 
