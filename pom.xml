@@ -8,7 +8,7 @@
     </parent>
     <groupId>com.dongyinuo</groupId>
     <artifactId>mybatis-generator</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>mybatis-generator</name>
     <description>mybatis-generator</description>
 
