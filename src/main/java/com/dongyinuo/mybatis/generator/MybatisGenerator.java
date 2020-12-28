@@ -40,6 +40,5 @@ public class MybatisGenerator {
         // 生成
         FileGenerator.generate(configInfo, tableInfos);
         System.out.println("全部完成");
-
     }
 }
