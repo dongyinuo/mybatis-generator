@@ -8,7 +8,7 @@
     </parent>
     <groupId>com.dongyinuo</groupId>
     <artifactId>mybatis-generator</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>mybatis-generator</name>
     <description>mybatis-generator</description>
 
@@ -20,7 +20,7 @@
         <connection>scm:git:http://github.com/dongyinuo/mybatis-generator.git</connection>
         <developerConnection>scm:git:git@github.com:dongyinuo/mybatis-generator.git</developerConnection>
         <url>https://github.com/dongyinuo/mybatis-generator.git</url>
-        <tag>mybatis-generator-0.0.2</tag>
+        <tag>mybatis-generator-0.0.1</tag>
     </scm>
 
     <dependencies>
