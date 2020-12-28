@@ -18,7 +18,7 @@
 
     <scm>
         <connection>scm:git:http://github.com/dongyinuo/mybatis-generator.git</connection>
-        <developerConnection>scm:git:git@github.com/dongyinuo/mybatis-generator.git</developerConnection>
+        <developerConnection>scm:git:https@github.com/dongyinuo/mybatis-generator.git</developerConnection>
         <url>https://github.com/dongyinuo/mybatis-generator.git</url>
         <tag>mybatis-generator-0.0.1</tag>
     </scm>
